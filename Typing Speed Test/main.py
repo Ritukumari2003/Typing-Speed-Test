@@ -1,6 +1,7 @@
 from time import *
 import random as r
 
+# Counting the number of wrong characters
 def check_errors(test_para,test_input):
     errors = 0
     min_len = min(len(test_input), len(test_para))
@@ -13,13 +14,39 @@ def check_errors(test_para,test_input):
     errors += abs(len(test_para) - len(test_input))
     return errors
 
+# getting the typing speed in words per minute
 def speed_time(start_time, end_time, user_input):
     time_taken = round(end_time - start_time, 2)
+    if time_taken == 0:
+        return 0
 
     words = len(user_input.split())
     wpm = (words / time_taken) * 60
     return round(wpm)
 
+# Getting the wrongly typed words 
+def get_error_words(test_para, test_input):
+    test_word = test_para.split()
+    input_word = test_input.split()
+
+    error_words = []
+    length = min(len(test_word), len(input_word))
+
+    for i in range(length):
+        if test_word[i] != input_word[i]:
+            error_words.append((test_word[i], input_word[i]))
+
+    # missing words
+    if len(test_word) > len(input_word):
+        for i in range(length, len(test_word)):
+            error_words.append((test_word[i], "(missing)"))
+
+    # extra words
+    elif len(input_word) > len(test_word):
+        for i in range(length, len(input_word)):
+            error_words.append(("(extra)", input_word[i]))
+
+    return error_words
 
 if __name__ == '__main__':
     while True:
@@ -57,11 +84,20 @@ if __name__ == '__main__':
             start_time = time()
             test_input = input()
             end_time = time()
-            print()
 
-            print("Speed: ", speed_time(start_time, end_time, test_input),"wpm")
-            print("Error: ", check_errors(test_para, test_input))
             print()
+            print("-"*8,"Result","-"*8)
+            print()
+            
+            print("Speed: ", speed_time(start_time, end_time, test_input),"wpm")
+            print("Error: ", check_errors(test_para, test_input),"Characters")
+            print("Error Words: ")
+            l = get_error_words(test_para, test_input)
+            for correct, typed in l:
+                print(f"{correct} -> {typed}")
+
+            print()
+            print("-"*20)
 
             print("Do you wanna continue with the game??(Y/N): ")
             ch = input()
@@ -72,5 +108,6 @@ if __name__ == '__main__':
         else:
             print("Thank you!!, Have a nice day..")
             break
+
 
 
