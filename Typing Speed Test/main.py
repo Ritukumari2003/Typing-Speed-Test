@@ -36,6 +36,11 @@ def get_error_words(test_para, test_input):
         if test_word[i] != input_word[i]:
             error_words.append((test_word[i], input_word[i]))
 
+    # compare word by word using zip
+    # for correct, typed in zip(test_words, input_words):
+    #     if correct != typed:
+    #         error_words.append((correct, typed))
+
     # missing words
     if len(test_word) > len(input_word):
         for i in range(length, len(test_word)):
@@ -108,6 +113,7 @@ if __name__ == '__main__':
         else:
             print("Thank you!!, Have a nice day..")
             break
+
 
 
 
